@@ -1,0 +1,24 @@
+# Скомпільовані файли (їх не можна завантажувати)
+[Bb]in/
+[Oo]bj/
+
+# Кеш та налаштування Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Файли бази даних (вони створюються скриптами, тому не зберігаємо їх у Git)
+*.db
+*.db-shm
+*.db-wal
+Data/shop.db
+
+# Локальні файли налаштувань
+appsettings.Development.json
+appsettings.Local.json
+
+# Файли операційної системи
+.DS_Store
+Thumbs.db

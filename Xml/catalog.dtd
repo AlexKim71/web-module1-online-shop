@@ -1,0 +1,16 @@
+<!ELEMENT catalog (categories, resources)>
+<!ATTLIST catalog schemaVersion CDATA #FIXED "1">
+
+<!ELEMENT categories (category*)>
+<!ELEMENT category EMPTY>
+<!ATTLIST category id CDATA #REQUIRED name CDATA #REQUIRED>
+
+<!ELEMENT resources (resource*)>
+<!ELEMENT resource (name, priceMinor, capacity, sku, brand)>
+<!ATTLIST resource id CDATA #REQUIRED categoryId CDATA #REQUIRED code CDATA #REQUIRED>
+
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT priceMinor (#PCDATA)>
+<!ELEMENT capacity (#PCDATA)>
+<!ELEMENT sku (#PCDATA)>
+<!ELEMENT brand (#PCDATA)>

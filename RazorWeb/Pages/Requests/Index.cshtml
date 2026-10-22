@@ -1,0 +1,45 @@
+﻿@page
+@using Domain.Models
+@model RazorWeb.Pages.Requests.IndexModel
+
+<h1>Список заявок</h1>
+
+<p>
+    <a asp-page="Create" style="padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">Створити нову заявку</a>
+    <a asp-page="/Index" style="margin-left: 10px;">Повернутися до каталогу</a>
+</p>
+
+<table class="table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="border: 1px solid #ddd; padding: 8px;">ID</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Товар</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Замовник</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Кількість</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Ціна</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Статус</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Дія</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RequestsList)
+        {
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.Id</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.ResourceName</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.CustomerName</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.Quantity</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@(item.UnitPriceMinor / 100.0) грн</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.Status</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                    @if (item.Status == RequestStatus.Active)
+                    {
+                        <form method="post" asp-page-handler="Cancel" asp-route-id="@item.Id" style="display:inline;">
+                            <button type="submit" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor:pointer;">Скасувати</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

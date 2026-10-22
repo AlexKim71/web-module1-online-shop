@@ -1,0 +1,35 @@
+﻿@page
+@model RazorWeb.Pages.IndexModel
+
+<h1>Каталог товарів</h1>
+
+<p>
+    <a asp-page="/Create" style="padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">Додати новий товар</a>
+    <a asp-page="/Requests/Index" style="padding: 10px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">Переглянути заявки</a>
+</p>
+
+<table class="table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="border: 1px solid #ddd; padding: 8px;">Назва</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Категорія</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Ціна</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Артикул (SKU)</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Бренд</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Доступно</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ResourcesList)
+        {
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.Name</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.CategoryName</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@(item.PriceMinor / 100.0) грн</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.Sku</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.Brand</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">@item.Available з @item.Capacity</td>
+            </tr>
+        }
+    </tbody>
+</table>

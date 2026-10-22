@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<catalog schemaVersion="1">
+  <categories>
+    <category id="1" name="Електроніка" />
+    <category id="2" name="Дім і сад" />
+    <category id="3" name="Спорт" />
+  </categories>
+  <resources>
+    <resource id="1" categoryId="1" code="PHONE-001">
+      <name>Смартфон Alpha</name>
+      <priceMinor>199900</priceMinor>
+      <capacity>10</capacity>
+      <sku>SKU-PHONE-001</sku>
+      <brand>Alpha</brand>
+    </resource>
+    <resource id="2" categoryId="3" code="BALL-001">
+      <name>Футбольний м'яч</name>
+      <priceMinor>59900</priceMinor>
+      <capacity>20</capacity>
+      <sku>SKU-PHONE-001</sku>
+      <brand>SportMax</brand>
+    </resource>
+  </resources>
+</catalog>

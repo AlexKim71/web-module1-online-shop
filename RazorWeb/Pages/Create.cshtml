@@ -1,0 +1,49 @@
+﻿@page
+@model RazorWeb.Pages.CreateModel
+
+<h1>Додати новий товар</h1>
+
+<form method="post" style="max-width: 500px;">
+    <div asp-validation-summary="All" style="color: red; font-weight: bold; margin-bottom: 15px;"></div>
+
+    <p>
+        <label>Категорія:</label><br />
+        <select asp-for="Input.CategoryId" asp-items="Model.Categories" style="width: 100%; padding: 5px;">
+            <option value="">-- Оберіть --</option>
+        </select>
+        <span asp-validation-for="Input.CategoryId" style="color:red"></span>
+    </p>
+    <p>
+        <label>Код (Code):</label><br />
+        <input asp-for="Input.Code" style="width: 100%; padding: 5px;" />
+        <span asp-validation-for="Input.Code" style="color:red"></span>
+    </p>
+    <p>
+        <label>Назва:</label><br />
+        <input asp-for="Input.Name" style="width: 100%; padding: 5px;" />
+        <span asp-validation-for="Input.Name" style="color:red"></span>
+    </p>
+    <p>
+        <label>Ціна (грн):</label><br />
+        <input asp-for="Input.PriceUah" placeholder="19,99" style="width: 100%; padding: 5px;" />
+        <span asp-validation-for="Input.PriceUah" style="color:red"></span>
+    </p>
+    <p>
+        <label>Кількість (Capacity):</label><br />
+        <input asp-for="Input.Capacity" type="number" style="width: 100%; padding: 5px;" />
+        <span asp-validation-for="Input.Capacity" style="color:red"></span>
+    </p>
+    <p>
+        <label>Артикул (SKU):</label><br />
+        <input asp-for="Input.Sku" style="width: 100%; padding: 5px;" />
+        <span asp-validation-for="Input.Sku" style="color:red"></span>
+    </p>
+    <p>
+        <label>Бренд:</label><br />
+        <input asp-for="Input.Brand" style="width: 100%; padding: 5px;" />
+        <span asp-validation-for="Input.Brand" style="color:red"></span>
+    </p>
+
+    <button type="submit" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Зберегти</button>
+    <a asp-page="Index" style="margin-left: 10px;">Скасувати</a>
+</form>

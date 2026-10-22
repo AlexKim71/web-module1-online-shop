@@ -1,0 +1,124 @@
+﻿@page "/catalog"
+@rendermode InteractiveServer
+@using Domain.Models
+@using Domain.Interfaces
+@inject IResourceRepository ResourceRepo
+
+<h3>Каталог товарів (Blazor)</h3>
+
+<div style="margin-bottom: 20px;">
+    <label>Пошук за назвою: </label>
+    <input @bind="searchString" @bind:event="oninput" placeholder="Введіть назву..." style="padding: 5px; width: 300px;" />
+</div>
+
+@if (resources == null)
+{
+    <p><em>Завантаження даних...</em></p>
+}
+else
+{
+    <table class="table" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th style="border: 1px solid #ddd; padding: 8px;">Назва</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">Категорія</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">Ціна</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">Доступно</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in FilteredResources)
+            {
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">@item.Name</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">@item.CategoryName</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">@(item.PriceMinor / 100.0) грн</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">@item.Available з @item.Capacity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<h3>Калькулятор вартості</h3>
+<div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; max-width: 400px;">
+    <label>Оберіть товар:</label><br />
+    <select @bind="selectedResourceId" style="width: 100%; padding: 5px; margin-bottom: 10px;">
+        <option value="0">-- Оберіть --</option>
+        @if (resources != null)
+        {
+            @foreach (var r in resources)
+            {
+                <option value="@r.Id">@r.Name (@r.PriceMinor / 100.0 грн)</option>
+            }
+        }
+    </select>
+
+    <label>Кількість:</label><br />
+    <input type="number" @bind="quantity" style="width: 100%; padding: 5px; margin-bottom: 10px;" />
+
+    <button @onclick="Calculate" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px;">Розрахувати</button>
+
+    @if (totalPrice.HasValue)
+    {
+        <p style="margin-top: 15px; font-weight: bold; color: green;">
+            Попередня вартість: @(totalPrice.Value / 100.0) грн
+        </p>
+    }
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p style="margin-top: 15px; font-weight: bold; color: red;">@errorMessage</p>
+    }
+</div>
+
+@code {
+    private List<Resource>? resources;
+    private string searchString = "";
+    private int selectedResourceId = 0;
+    private int quantity = 1;
+    private long? totalPrice;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Завантажуємо дані з БД
+        var list = await ResourceRepo.GetAllAsync();
+        resources = list.ToList();
+    }
+
+    // Фільтрація без звернення до БД (просто в пам'яті)
+    private IEnumerable<Resource> FilteredResources =>
+        string.IsNullOrWhiteSpace(searchString)
+            ? resources ?? new List<Resource>()
+            : resources?.Where(r => r.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)) ?? new List<Resource>();
+
+    private void Calculate()
+    {
+        totalPrice = null;
+        errorMessage = null;
+
+        var res = resources?.FirstOrDefault(r => r.Id == selectedResourceId);
+        if (res == null)
+        {
+            errorMessage = "Оберіть товар зі списку!";
+            return;
+        }
+
+        if (quantity <= 0)
+        {
+            errorMessage = "Кількість має бути більше нуля!";
+            return;
+        }
+
+        if (quantity > res.Available)
+        {
+            errorMessage = $"Недостатньо на складі! Доступно лише {res.Available}.";
+            return;
+        }
+
+        // Розрахунок: ціна в копійках * кількість
+        totalPrice = res.PriceMinor * quantity;
+    }
+}

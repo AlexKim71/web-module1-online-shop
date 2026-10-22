@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Data/">
+    <File Path="init.sql" />
+    <File Path="seed.sql" />
+  </Folder>
+  <Project Path="BlazorWeb/BlazorWeb.csproj" />
+  <Project Path="ClassLibrary1/Domain.csproj" />
+  <Project Path="ConsoleApp1/ConsoleApp.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+  <Project Path="RazorWeb/RazorWeb.csproj" />
+</Solution>
