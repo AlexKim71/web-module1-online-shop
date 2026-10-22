@@ -4,26 +4,29 @@ using System.Xml.Schema;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-// Визначаємо правильний шлях до папки Xml (вона лежить у корені WebModule1)
-string currentDir = Directory.GetCurrentDirectory();
-string xmlDir = Path.GetFullPath(Path.Combine(currentDir, "../Xml"));
-
-// Якщо програма запускається з папки bin/Debug, шлях буде іншим
-if (!Directory.Exists(xmlDir))
+// Надійний метод пошуку папки Xml (піднімається від папки bin до самого кореня)
+string FindXmlDir()
 {
-    xmlDir = Path.GetFullPath(Path.Combine(currentDir, "../../../../Xml"));
+    var dir = new DirectoryInfo(AppContext.BaseDirectory);
+    while (dir != null)
+    {
+        string p = Path.Combine(dir.FullName, "Xml");
+        if (Directory.Exists(p) && File.Exists(Path.Combine(p, "catalog.xml")))
+            return p;
+        dir = dir.Parent;
+    }
+    return null!;
+}
+
+string xmlDir = FindXmlDir();
+if (xmlDir == null)
+{
+    Console.WriteLine("КРИТИЧНА ПОМИЛКА: Папку Xml з файлом catalog.xml не знайдено!");
+    return;
 }
 
 string xmlPath = Path.Combine(xmlDir, "catalog.xml");
 string xsdPath = Path.Combine(xmlDir, "catalog.xsd");
-
-// Перевірка, чи взагалі існують файли за цим шляхом
-if (!File.Exists(xmlPath))
-{
-    Console.WriteLine($"КРИТИЧНА ПОМИЛКА: Файл не знайдено за шляхом {xmlPath}");
-    Console.WriteLine("Переконайтеся, що папка Xml з файлами лежить у WebModule1!");
-    return;
-}
 
 Console.WriteLine("--- 1. Перевірка XSD (включаючи xs:unique) ---");
 ValidateXml(xsdPath, xmlPath);
@@ -52,13 +55,11 @@ using (var reader = XmlReader.Create(xmlPath))
     }
 }
 
-
-// Метод валідації за XSD
 static void ValidateXml(string schemaFile, string xmlFile)
 {
     var settings = new XmlReaderSettings
     {
-        DtdProcessing = DtdProcessing.Prohibit, // Забороняємо DTD
+        DtdProcessing = DtdProcessing.Prohibit,
         XmlResolver = null,
         ValidationType = ValidationType.Schema
     };
