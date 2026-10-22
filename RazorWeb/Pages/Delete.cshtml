@@ -1,0 +1,27 @@
+@page "{id:int}"
+@model RazorWeb.Pages.DeleteModel
+
+<h1>Видалити товар</h1>
+
+@if (Model.ErrorMessage != null)
+{
+    <div style="color: red; font-weight: bold; padding: 10px; border: 1px solid red; margin-bottom: 20px;">
+        @Model.ErrorMessage
+    </div>
+}
+
+@if (Model.Resource != null)
+{
+    <h3>Ви впевнені, що хочете видалити цей товар?</h3>
+    <div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; max-width: 400px;">
+        <p><strong>Назва:</strong> @Model.Resource.Name</p>
+        <p><strong>Артикул (SKU):</strong> @Model.Resource.Sku</p>
+        <p><strong>Бренд:</strong> @Model.Resource.Brand</p>
+    </div>
+
+    <form method="post" style="margin-top: 20px;">
+        <input type="hidden" asp-for="Resource.Id" />
+        <button type="submit" style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">Так, видалити</button>
+        <a asp-page="Index" style="margin-left: 15px;">Скасувати</a>
+    </form>
+}

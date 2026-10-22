@@ -3,12 +3,16 @@
 
 <h1>Каталог товарів</h1>
 
-<p>
+<div style="margin-bottom: 20px;">
     <a asp-page="/Create" style="padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">Додати новий товар</a>
     <a asp-page="/Requests/Index" style="padding: 10px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">Переглянути заявки</a>
-</p>
+    
+    <!-- Кнопки XML тепер тут, на видному місці -->
+    <a asp-page="/Xml/Export" style="padding: 10px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; margin-left: 20px;">Експорт XML</a>
+    <a asp-page="/Xml/Import" style="padding: 10px; background: #17a2b8; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">Імпорт XML</a>
+</div>
 
-<table class="table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+<table class="table" style="width: 100%; border-collapse: collapse;">
     <thead>
         <tr style="background-color: #f2f2f2;">
             <th style="border: 1px solid #ddd; padding: 8px;">Назва</th>
@@ -17,6 +21,7 @@
             <th style="border: 1px solid #ddd; padding: 8px;">Артикул (SKU)</th>
             <th style="border: 1px solid #ddd; padding: 8px;">Бренд</th>
             <th style="border: 1px solid #ddd; padding: 8px;">Доступно</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Дії</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +34,11 @@
                 <td style="border: 1px solid #ddd; padding: 8px;">@item.Sku</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">@item.Brand</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">@item.Available з @item.Capacity</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                    <!-- Тільки ці дві кнопки мають бути в таблиці -->
+                    <a asp-page="./Edit" asp-route-id="@item.Id" style="color: #ffc107; font-weight: bold; margin-right: 10px;">Редагувати</a>
+                    <a asp-page="./Delete" asp-route-id="@item.Id" style="color: #dc3545; font-weight: bold;">Видалити</a>
+                </td>
             </tr>
         }
     </tbody>
